@@ -12,5 +12,17 @@ by Seungwoong Ha and Hawoong Jeong.
 - Pytorch 1.0+ (written for 1.8)
 
 ## Run experiments
-TBA
+Here is a typical parameter settings for training RAIN for spring-ball systems with 10 balls.
+```
+torchrun RAIN.py --epochs 100000 --system spring --model-type RAIN --agent-num 10 --dt 5 --heads-dim 32 --heads-num 4 --lstm-num 1 --batch-size 128 --lr 0.0001 --input-length 50 --output-length 50 --pa T --gt F --ww F --diff T --checkpoint -1 --indicator test 
+'''
+* Note that agent_num, dt, input_length, and output_length should be match to the dataset you have previously created.
+* model_ type : RAIN, JointLSTM, SingleLSTM, NRI
+* heads_dim, heads_num : controls the number of heads and its dimension of the pairwise attention (PA) module.
+* pa : determines whether to use PA mechanism or not. T : True, F : False
+* gt : if this turns into T (True), the model uses ground-truth weights for its prediction. (Do not enable this option with the motion data, since it has no true edges.)
+* ww : copying intrinsic frequency to every steps. Only enable this for training of Kuramoto systems.
+* diff : determines whether to predict the state differences (T), or the raw state value of the next timestep (F).
+* checkpoint : -1 as a default, {epoch}*{lr}_{new indicator} will refer the saved folders (at the result/run) with the same settings, load the modle checkpoints of epoch {epoch}, setting learning rate to new {lr}, and {new indicator} will be concatenated to the original indiacor. (example : 400*1e-5_E400)
+* indicator : use short words for describing your current trial, and it will be attached to the file and folder names.
 
